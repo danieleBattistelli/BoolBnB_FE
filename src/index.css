@@ -1,0 +1,414 @@
+* {
+  list-style: none;
+}
+
+.navbar .container-fluid a {
+  color: whitesmoke;
+}
+
+.navbar .container-fluid .nav-item a.nav-link.nav-link.active{
+  font-weight: 500;
+  color: rgb(255, 255, 255);
+}
+
+.fa-star{
+  color: #ffc107;
+}
+
+main{
+  min-height: 100vh;
+}
+
+.navbar {
+  color: white;
+  background-color: #EF8634;
+}
+
+.footer {
+ background-color: #EF8634; 
+ font-size: 0.8rem;
+}
+
+.link-utili{
+ font-size: 1rem;
+}
+
+.lavora-con-noi {
+  font-size: 1rem;
+ }
+
+ .navbar-toggler {
+  border: 1px solid white;
+ }
+
+ .fa-bars {
+  color: whitesmoke;
+ }
+
+ .navbar-toggler:focus {
+  outline: none; /* Rimuove l'outline di default */
+  box-shadow: 0 0 0 2px white; /* Aggiunge un box-shadow personalizzato al bottone cliccato (esempio di colore arancione) */
+}
+
+/* caselle input */
+.custom-width {
+  max-width: 200px; 
+  width: 100%;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.custom-width-city {
+  max-width: 250px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.card-header {
+  background-color: #EF8634;
+  color: white;
+}
+
+.btn-orange {
+  background-color: #EF8634;
+  color: white; 
+  transition: 0.3s;
+}
+
+.btn-orange:hover{
+  background-color: #af6227;
+  color: white; 
+}
+
+.btn-outline-orange {
+  border: 1px solid #EF8634;
+  color: #EF8634;
+}
+
+.btn-outline-orange:hover {
+  background-color: #EF8634;
+  color: white; 
+}
+
+.nav-link-elem {
+  position: relative;
+  color: white; /* Testo bianco */
+  text-decoration: none; /* Rimuove sottolineatura predefinita */
+  padding: 5px 0; /* Un po' di spazio per la barra sotto */
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link-elem::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 2px; /* Altezza della barra */
+  background-color: rgb(255, 255, 255);
+  transition: width 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+.nav-link-elem:hover::after,
+.nav-link-elem.active::after {
+  background-color: white; /* Barra completamente bianca all'hover e quando attivo */
+  width: 100%;
+}
+
+.nav-link-elem.active {
+  font-weight: 600; /* Puoi rimuoverlo se non vuoi un testo più marcato */
+}
+
+.img-container {
+  position: relative;
+}
+
+
+.max-width {
+  max-width: 350px;
+  width: 100%;
+  text-align: center;
+}
+
+
+.advanced-search-container {
+  background-color: rgb(236, 236, 236);
+  padding: 3rem 0;
+}
+
+.card-container {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  background: white;
+}
+
+.card-container:hover {
+  transform: scale(1.02);
+}
+
+.img-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+.like-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.like-button:hover {
+  background: white;
+}
+
+.like-button i {
+  font-size: 18px;
+  color: red;
+}
+
+.card-header-custom {
+  background-color: #EF8634;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  font-weight: bold;
+}
+
+.card-body-custom {
+  padding: 15px;
+  text-align: center;
+}
+
+.card-address {
+  font-size: 14px;
+  color: gray;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.card-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: left;
+  padding: 10px 0;
+}
+
+.info-column {
+  width: 48%;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.full-width {
+  width: 100%;
+  text-align: center;
+}
+
+.card-stars {
+  margin: 10px 0;
+}
+
+.card-likes {
+  font-size: 18px;
+  font-weight: bold;
+  color: red;
+}
+
+.info-column p i {
+  color: #EF8634;
+}
+
+.info-column p {
+  color: black;
+}
+
+
+/* Stile generale del form */
+.form-container {
+  background: #f8f9fa; 
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Titolo del form */
+.form-container h1 {
+  color: #EF8634;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Stile input e textarea */
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: all 0.3s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #EF8634;
+  box-shadow: 0 0 5px rgba(239, 134, 52, 0.5);
+}
+
+/* Stile per selettori */
+.form-select {
+  border-radius: 8px;
+}
+
+/* Pulsanti */
+.btn-orange {
+  background-color: #EF8634;
+  color: white;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-weight: 500;
+  transition: background 0.3s ease-in-out;
+}
+
+.btn-orange:hover {
+  background-color: #c76d2d;
+}
+
+.btn-outline-orange {
+  border: 1px solid #EF8634;
+  color: #EF8634;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-orange:hover {
+  background-color: #EF8634;
+  color: white;
+}
+
+/* Sezione immagini */
+.img-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.img-preview-container img {
+  border-radius: 10px;
+  object-fit: cover;
+  width: 120px;
+  height: 120px;
+}
+
+/* Pulsante rimuovi immagine */
+.btn-remove-image {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.btn-remove-image:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* Pulsante "Indietro" */
+.btn-back {
+  margin: 20px;
+  font-size: 1rem;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.advanced-search-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  border-radius: 12px;
+  border: none;
+}
+
+.form-control, .form-select {
+  border-radius: 8px;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}
+
+.text-big {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+
+.like {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 10px; 
+  z-index: 10;
+}
+
+.like:hover {
+  background-color: rgb(0, 0, 0); 
+
+}
+
+.like button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.like span {
+  font-size: 18px;
+  color: white;
+  margin-left: 5px;
+}
