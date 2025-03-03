@@ -1,12 +1,10 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import "./detailPageCss.css"
+import "./detailPageCss.css";
 import ReviewModale from "../components/ReviewModale";
 import SendEmail from "../components/SendEmail";
 import { useAlertContext } from "../contexts/AlertContext";
-
-const apiUrl = import.meta.env.VITE_API_URL;
+import { mockImmobili } from "../mockData";
 
 function PaginaDettaglio() {
     const { slug } = useParams();
@@ -15,39 +13,30 @@ function PaginaDettaglio() {
     const [errore, setErrore] = useState(null);
     const [heartCount, setHeartCount] = useState(0);
 
-    const {setError} = useAlertContext();
-    const {setMessage} = useAlertContext();
+    const { setError } = useAlertContext();
+    const { setMessage } = useAlertContext();
 
     const showImmobile = () => {
-        // Effettua la richiesta all'API
-        axios.get(`${apiUrl}/immobili/${slug}`)
-            .then(response => {
-                // Salva i dati ricevuti nello stato
-                setImmobile(response.data.results);
-                const savedHeartCounts = JSON.parse(localStorage.getItem("heartCounts")) || {};
-                setHeartCount(savedHeartCounts[response.data.results.immobile.id] || 0);
-            })
-            .catch(() => {
-                // Se c'è un errore, lo gestiamo
-                setErrore("Errore nel recupero dei dati");
-            })
-            .finally(() => {
-                // Indichiamo che il caricamento è terminato
-                setCaricamento(false);
-            });
-    }
+        const immobile = mockImmobili.find((immobile) => immobile.slug === slug);
+        if (immobile) {
+            setImmobile(immobile);
+            const savedHeartCounts = JSON.parse(localStorage.getItem("heartCounts")) || {};
+            setHeartCount(savedHeartCounts[immobile.id] || 0);
+        } else {
+            setErrore("Errore nel recupero dei dati");
+        }
+        setCaricamento(false);
+    };
 
     useEffect(() => {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         showImmobile();
-
-    }, [slug]); // Effettua la richiesta quando cambia lo slug
+    }, [slug]);
 
     if (caricamento) return <p>Caricamento...</p>;
     if (!immobile) return <p>Elemento non trovato</p>;
 
-    const alloggio = immobile.tipi_alloggio.map(tipo => tipo.nome_tipo_alloggio).join(", ");
-
+    const alloggio = immobile.tipi_alloggio.map((tipo) => tipo.nome_tipo_alloggio).join(", ");
 
     //Implemento le stelle per il rating dell'immobile
 
@@ -63,7 +52,6 @@ function PaginaDettaglio() {
         }
         return stars;
     };
-
 
     // Funzione per evidenziare l'elemento di destinazione
     const handleHighlight = (event) => {
@@ -87,7 +75,7 @@ function PaginaDettaglio() {
         event.preventDefault();
         const newHeartCount = heartCount + 1;
         const savedHeartCounts = JSON.parse(localStorage.getItem("heartCounts")) || {};
-        savedHeartCounts[immobile.immobile.id] = newHeartCount;
+        savedHeartCounts[immobile.id] = newHeartCount;
         localStorage.setItem("heartCounts", JSON.stringify(savedHeartCounts));
         setHeartCount(newHeartCount);
     };
@@ -95,7 +83,7 @@ function PaginaDettaglio() {
     const handleSubmit = (nuovaRecensione) => {
         console.log(nuovaRecensione);
 
-        axios.post(`${apiUrl}/recensioni/${immobile.immobile.id}`, nuovaRecensione)
+        axios.post(`${apiUrl}/recensioni/${immobile.id}`, nuovaRecensione)
             .then(response => {
                 console.log("Recensione inviata con successo", response.data);
                 setMessage("Recensione inviata con successo!");
@@ -109,9 +97,9 @@ function PaginaDettaglio() {
                 setError("Errore nell'invio della recensione");
                 setTimeout(() => {
                     setError("");
-                }, 5000);            });
+                }, 5000);
+            });
     };
-
 
     return (
         <main>
@@ -120,7 +108,7 @@ function PaginaDettaglio() {
                     <div id="title" className="d-flex py-2">
                         <h2>
                             <a href="#adress" onClick={handleHighlight}><i className="fa-solid fa-location-dot me-1"></i>
-                                {immobile.immobile.titolo_descrittivo}
+                                {immobile.titolo_descrittivo}
                             </a>
                         </h2>
                     </div>
@@ -150,7 +138,7 @@ function PaginaDettaglio() {
                             {immobile.immagini.map((curImage, index) => (
                                 <div key={curImage.nome_immagine} className={`carousel-item ${index === 0 ? "active" : ""}`}>
                                     <img
-                                        src={`${apiUrl}/images/${curImage.nome_immagine}`}
+                                        src={`/images/${curImage.nome_immagine}`}
                                         alt={`Slide ${index + 1}`}
                                         onError={(e) => e.target.src = 'https://placehold.co/600x400'}
                                     />
@@ -171,31 +159,31 @@ function PaginaDettaglio() {
 
                     <hr />
                     <div id="adress">
-                        <span><i className="fa-solid fa-map-pin"></i> <strong>Indirizzo:</strong> {immobile.immobile.indirizzo_completo}</span>
+                        <span><i className="fa-solid fa-map-pin"></i> <strong>Indirizzo:</strong> {immobile.indirizzo_completo}</span>
                     </div>
                     <hr />
                     <div id="info" className="py-2">
                         <div id="descrizione">
                             <h5 className="pb-2">DESCRIZIONE</h5>
-                            <p>{immobile.immobile.descrizione}</p>
+                            <p>{immobile.descrizione}</p>
                         </div>
                         <hr />
                         <div className="dettagli row">
                             <h5 className="pb-2">Dettagli della struttura</h5>
                             <div className="col-6">
                                 <p>
-                                    <i className="fa-solid fa-up-right-and-down-left-from-center"></i> MQ: {immobile.immobile.mq}
+                                    <i className="fa-solid fa-up-right-and-down-left-from-center"></i> MQ: {immobile.mq}
                                 </p>
                                 <p>
-                                    <i className="fa-solid fa-bath"></i> Bagni: {immobile.immobile.bagni}
+                                    <i className="fa-solid fa-bath"></i> Bagni: {immobile.bagni}
                                 </p>
                             </div>
                             <div className="col-6">
                                 <p>
-                                    <i className="fa-solid fa-door-open"></i> Locali: {immobile.immobile.locali}
+                                    <i className="fa-solid fa-door-open"></i> Locali: {immobile.locali}
                                 </p>
                                 <p>
-                                    <i className="fa-solid fa-bed"></i> Posti letto: {immobile.immobile.posti_letto}
+                                    <i className="fa-solid fa-bed"></i> Posti letto: {immobile.posti_letto}
                                 </p>
                             </div>
                             <div className="col-6">
@@ -208,7 +196,7 @@ function PaginaDettaglio() {
                         <div id="info" className="py-2">
                             <h5>INFO E CONTATTI</h5>
                             <div id="host" className="py-1">
-                                <span><i className="fa-solid fa-user"></i> <strong>Host:</strong> {immobile.immobile.username_proprietario
+                                <span><i className="fa-solid fa-user"></i> <strong>Host:</strong> {immobile.username_proprietario
                                     .replace(/_/g, ' ')  // Sostituisci gli underscore con uno spazio
                                     .replace(/\b\w/g, letter => letter.toUpperCase())}  {/* Trasforma la prima lettera di ogni parola in maiuscolo */}
                                 </span>
@@ -226,22 +214,22 @@ function PaginaDettaglio() {
                         <div className="pb-2">
                             <h3>Recensioni clienti</h3>
                             <span>
-                                {immobile?.immobile?.tot_recensioni === 1
-                                    ? `${immobile.immobile.tot_recensioni} valutazione globale`
-                                    : `${immobile.immobile.tot_recensioni} valutazioni globali`}
+                                {immobile?.tot_recensioni === 1
+                                    ? `${immobile.tot_recensioni} valutazione globale`
+                                    : `${immobile.tot_recensioni} valutazioni globali`}
                             </span>
                         </div>
                         <div className="align-items-center d-flex flex-column justify-content-center px-3">
                             <span className="justify-content-center"><strong>Voto medio</strong></span>
                             <span>
-                                {renderStars(immobile.immobile.voto_medio)} {immobile.immobile.voto_medio.toFixed(1)} su 5
+                                {renderStars(immobile.voto_medio)} {immobile.voto_medio.toFixed(1)} su 5
                             </span>
 
                         </div>
                     </div>
                 </div>
                 <div className="recensione">
-                    {immobile.immobile.recensioni.map((curRecensione, i) => (
+                    {immobile.recensioni.map((curRecensione, i) => (
                         <div key={i} className="card shadow-sm mb-3">
                             <div className="card-header d-flex justify-content-between align-items-center">
                                 <h3>{curRecensione.username

@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-const apiUrl = import.meta.env.VITE_API_URL;
 import { useAlertContext } from "../contexts/AlertContext.jsx";
-
+import { mockTipiAlloggio } from "../mockData";
 
 function CreatePage() {
 
@@ -57,20 +55,9 @@ function CreatePage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    getTipiAlloggi();
+    setTipiAlloggio(mockTipiAlloggio);
   }, [])
 
-
-  const getTipiAlloggi = () => {
-    setError("");
-    axios.get(`${import.meta.env.VITE_API_URL}/tipi-alloggi`).then((resp) => {
-      const { results } = resp.data
-      setTipiAlloggio(results)
-    }).catch((error) => {
-      console.error('Errore nel recupero dei tipi di alloggi', error)
-    })
-  }
 
   const handleSelectChange = (event) => {
     setSelectedTipologia(event.target.value)
@@ -328,7 +315,7 @@ function CreatePage() {
             {/* Pulsante submit */}
             <button type="submit" className="btn btn-outline-orange mt-3">+ Crea nuovo immobile</button>
           </div>
-          
+
         </form>
       </section>
 

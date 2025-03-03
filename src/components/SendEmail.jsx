@@ -8,72 +8,48 @@ function SendEmail() {
         phone: "",
         subject: "",
         text: "",
-    }
+    };
 
     const [emailData, setEmailData] = useState(initialEmailData);
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
-    // Funzione per aggiornare lo stato dei campi
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEmailData({ ...emailData, [name]: value });
-        console.log(emailData);
-
     };
 
-
-    // Funzione per inviare la mail
-    const sendEmail = async (e) => {
+    const sendEmail = (e) => {
         e.preventDefault();
         setLoading(true);
         setMessage("Invio in corso...");
 
-        try {
-            const response = await fetch("http://localhost:3000/send-email", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(emailData),
-            });
-
-            const data = await response.json();
-
-            if (response.status === 200) {
-                setMessage(data.message);
-                setErrors({});
-                setEmailData(initialEmailData);
-
-                setTimeout(() => {
-                    setMessage("");
-                }, 3000);
-            } else {
+        setTimeout(() => {
+            setLoading(false);
+            setMessage("Email inviata con successo!");
+            setEmailData(initialEmailData);
+            setErrors({});
+            setTimeout(() => {
                 setMessage("");
-                setErrors({
-                    ...errors,
-                    form: data.message,
-                });
-            }
-        } catch (error) {
-            console.error("Errore:", error);
-            setMessage("Errore nell'invio dell'email.");
-        }
-
-        setLoading(false);
+            }, 3000);
+        }, 2000);
     };
 
     return (
         <div className="my-2">
-            <p><strong> <i>Se hai qualche problema o vuoi chiedere qualsiasi tipo di informazione non esitare a contattaci compilando il form qui sotto, un nostro consulente sarà lieto di risponderti il prima possibile.</i></strong></p>
+            <p>
+                <strong>
+                    <i>
+                        Se hai qualche problema o vuoi chiedere qualsiasi tipo di informazione non esitare a contattaci compilando il form qui sotto, un nostro consulente sarà lieto di risponderti il prima possibile.
+                    </i>
+                </strong>
+            </p>
             <div id="contact-form">
                 <form onSubmit={sendEmail} className="w-75">
                     <div className="col-12 d-flex justify-content-between">
                         <div className="primi mt-1 mb-3">
-                            <label className="d-block">
-                                Nome
-                            </label>
+                            <label className="d-block">Nome</label>
                             <input
                                 type="text"
                                 name="name"
@@ -85,9 +61,7 @@ function SendEmail() {
                             {errors.name && <span className="error">{errors.name}</span>}
                         </div>
                         <div className="primi mt-1 mb-3">
-                            <label className="d-block">
-                                Cognome
-                            </label>
+                            <label className="d-block">Cognome</label>
                             <input
                                 type="text"
                                 name="surname"
@@ -98,12 +72,9 @@ function SendEmail() {
                             />
                             {errors.surname && <span className="error">{errors.surname}</span>}
                         </div>
-
                     </div>
                     <div className="col mt-1 mb-3">
-                        <label className="d-block">
-                            Email
-                        </label>
+                        <label className="d-block">Email</label>
                         <input
                             type="email"
                             name="email"
@@ -115,9 +86,7 @@ function SendEmail() {
                         {errors.email && <span className="error">{errors.email}</span>}
                     </div>
                     <div className="col mt-1 mb-3">
-                        <label className="d-block">
-                            Telefono
-                        </label>
+                        <label className="d-block">Telefono</label>
                         <input
                             type="text"
                             name="phone"
@@ -129,9 +98,7 @@ function SendEmail() {
                         {errors.phone && <span className="error">{errors.phone}</span>}
                     </div>
                     <div className="col mt-1 mb-3">
-                        <label className="d-block">
-                            Oggetto
-                        </label>
+                        <label className="d-block">Oggetto</label>
                         <input
                             type="text"
                             name="subject"
@@ -142,11 +109,8 @@ function SendEmail() {
                         />
                         {errors.subject && <span className="error">{errors.subject}</span>}
                     </div>
-
                     <div className="col mt-1 mb-3">
-                        <label className="d-block">
-                            Messaggio
-                        </label>
+                        <label className="d-block">Messaggio</label>
                         <textarea
                             name="text"
                             value={emailData.text}
@@ -156,7 +120,6 @@ function SendEmail() {
                         ></textarea>
                         {errors.text && <span className="error">{errors.text}</span>}
                     </div>
-
                     <button type="submit" disabled={loading} className="w-100 mt-3">
                         {loading ? "..." : "Invia Email"}
                     </button>
@@ -166,6 +129,6 @@ function SendEmail() {
             </div>
         </div>
     );
-};
+}
 
 export default SendEmail;
