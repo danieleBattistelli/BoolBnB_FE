@@ -1,9 +1,9 @@
 import React from "react";
 
-function AppCard({ immobile, defaultImage, Link, renderStars, handleLike, bagni, locali, postiLetto, alloggio, mq }) {
+function AppCard({ immobile, Link, renderStars, handleLike, bagni, locali, postiLetto, alloggio, mq }) {
     const imageUrl = immobile.immagini && immobile.immagini.length > 0
         ? `/images/${immobile.immagini[0].nome_immagine}`
-        : `${defaultImage}`;
+        : `/images/placeholder.webp`;
 
     return (
         <div className="col my-3" key={immobile.id}>

@@ -5,6 +5,7 @@ import ReviewModale from "../components/ReviewModale";
 import SendEmail from "../components/SendEmail";
 import { useAlertContext } from "../contexts/AlertContext";
 import { mockImmobili } from "../mockData";
+import ErrorBoundary from "../components/ErrorBoundary"; // Importa ErrorBoundary
 
 function PaginaDettaglio() {
     const { slug } = useParams();
@@ -12,6 +13,7 @@ function PaginaDettaglio() {
     const [caricamento, setCaricamento] = useState(true);
     const [errore, setErrore] = useState(null);
     const [heartCount, setHeartCount] = useState(0);
+    const images = ["image1.jpg", "image2.jpg", "image3.jpg"]; // Immagini statiche
 
     const { setError } = useAlertContext();
     const { setMessage } = useAlertContext();
@@ -102,165 +104,162 @@ function PaginaDettaglio() {
     };
 
     return (
-        <main>
-            <section className="container my-3">
-                <div id="immobile">
-                    <div id="title" className="d-flex py-2">
-                        <h2>
-                            <a href="#adress" onClick={handleHighlight}><i className="fa-solid fa-location-dot me-1"></i>
-                                {immobile.titolo_descrittivo}
-                            </a>
-                        </h2>
-                    </div>
-                    <div id="carouselExampleIndicators" className="carousel slide img-container">
-                        {/* Indicatori dinamici */}
-                        <div className="carousel-indicators">
-                            {immobile.immagini.map((_, index) => (
-                                <button
-                                    key={index}
-                                    type="button"
-                                    data-bs-target="#carouselExampleIndicators"
-                                    data-bs-slide-to={index}
-                                    className={index === 0 ? "active" : ""}
-                                    aria-current={index === 0 ? "true" : undefined}
-                                    aria-label={`Slide ${index + 1}`}
-                                ></button>
-                            ))}
+        <ErrorBoundary>
+            <main>
+                <section className="container my-3">
+                    <div id="immobile">
+                        <div id="title" className="d-flex py-2">
+                            <h2>
+                                <a href="#adress" onClick={handleHighlight}><i className="fa-solid fa-location-dot me-1"></i>
+                                    {immobile.titolo_descrittivo}
+                                </a>
+                            </h2>
+                        </div>
+                        <div id="carouselExampleIndicators" className="carousel slide img-container">
+                            {/* Indicatori dinamici */}
+                            <div className="carousel-indicators">
+                                {images.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        type="button"
+                                        data-bs-target="#carouselExampleIndicators"
+                                        data-bs-slide-to={index}
+                                        className={index === 0 ? "active" : ""}
+                                        aria-current={index === 0 ? "true" : undefined}
+                                        aria-label={`Slide ${index + 1}`}
+                                    ></button>
+                                ))}
+                            </div>
+
+                            <div className="d-flex justify-content-center align-items-center mb-2 like">
+                                <button className="btn" onClick={handleLike}>❤️</button>
+                                <span>{heartCount}</span>
+                            </div>
+
+                            {/* Immagini dinamiche */}
+                            <div className="carousel-inner">
+                                {images.map((curImage, index) => (
+                                    <div key={curImage} className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                                        <img
+                                            src={`/images/${curImage}`}
+                                            alt={`Slide ${index + 1}`}
+                                            onError={(e) => e.target.src = 'https://placehold.co/600x400'}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Pulsanti di controllo */}
+                            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Previous</span>
+                            </button>
+                            <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Next</span>
+                            </button>
                         </div>
 
-                        <div className="d-flex justify-content-center align-items-center mb-2 like">
-                            <button className="btn" onClick={handleLike}>❤️</button>
-                            <span>{heartCount}</span>
-                        </div>
-
-                        {/* Immagini dinamiche */}
-                        <div className="carousel-inner">
-                            {immobile.immagini.map((curImage, index) => (
-                                <div key={curImage.nome_immagine} className={`carousel-item ${index === 0 ? "active" : ""}`}>
-                                    <img
-                                        src={`/images/${curImage.nome_immagine}`}
-                                        alt={`Slide ${index + 1}`}
-                                        onError={(e) => e.target.src = 'https://placehold.co/600x400'}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Pulsanti di controllo */}
-                        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Previous</span>
-                        </button>
-                        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Next</span>
-                        </button>
-                    </div>
-
-                    <hr />
-                    <div id="adress">
-                        <span><i className="fa-solid fa-map-pin"></i> <strong>Indirizzo:</strong> {immobile.indirizzo_completo}</span>
-                    </div>
-                    <hr />
-                    <div id="info" className="py-2">
-                        <div id="descrizione">
-                            <h5 className="pb-2">DESCRIZIONE</h5>
-                            <p>{immobile.descrizione}</p>
-                        </div>
                         <hr />
-                        <div className="dettagli row">
-                            <h5 className="pb-2">Dettagli della struttura</h5>
-                            <div className="col-6">
-                                <p>
-                                    <i className="fa-solid fa-up-right-and-down-left-from-center"></i> MQ: {immobile.mq}
-                                </p>
-                                <p>
-                                    <i className="fa-solid fa-bath"></i> Bagni: {immobile.bagni}
-                                </p>
-                            </div>
-                            <div className="col-6">
-                                <p>
-                                    <i className="fa-solid fa-door-open"></i> Locali: {immobile.locali}
-                                </p>
-                                <p>
-                                    <i className="fa-solid fa-bed"></i> Posti letto: {immobile.posti_letto}
-                                </p>
-                            </div>
-                            <div className="col-6">
-                                <p>
-                                    <i className="fa-solid fa-house-chimney"></i> Tipo di alloggio: {alloggio}
-                                </p>
-                            </div>
+                        <div id="adress">
+                            <span><i className="fa-solid fa-map-pin"></i> <strong>Indirizzo:</strong> {immobile.indirizzo_completo}</span>
                         </div>
                         <hr />
                         <div id="info" className="py-2">
-                            <h5>INFO E CONTATTI</h5>
-                            <div id="host" className="py-1">
-                                <span><i className="fa-solid fa-user"></i> <strong>Host:</strong> {immobile.username_proprietario
-                                    .replace(/_/g, ' ')  // Sostituisci gli underscore con uno spazio
-                                    .replace(/\b\w/g, letter => letter.toUpperCase())}  {/* Trasforma la prima lettera di ogni parola in maiuscolo */}
-                                </span>
+                            <div id="descrizione">
+                                <h5 className="pb-2">DESCRIZIONE</h5>
+                                <p>{immobile.descrizione}</p>
                             </div>
-                            <div>
-                                <SendEmail />
-                            </div>
-                        </div>
-                        <hr />
-
-                    </div>
-                </div>
-                <div id="recensioni" className="pt-5">
-                    <div id="titolo_recensioni" className="d-flex justify-content-between">
-                        <div className="pb-2">
-                            <h3>Recensioni clienti</h3>
-                            <span>
-                                {immobile?.tot_recensioni === 1
-                                    ? `${immobile.tot_recensioni} valutazione globale`
-                                    : `${immobile.tot_recensioni} valutazioni globali`}
-                            </span>
-                        </div>
-                        <div className="align-items-center d-flex flex-column justify-content-center px-3">
-                            <span className="justify-content-center"><strong>Voto medio</strong></span>
-                            <span>
-                                {renderStars(immobile.voto_medio)} {immobile.voto_medio.toFixed(1)} su 5
-                            </span>
-
-                        </div>
-                    </div>
-                </div>
-                <div className="recensione">
-                    {immobile.recensioni.map((curRecensione, i) => (
-                        <div key={i} className="card shadow-sm mb-3">
-                            <div className="card-header d-flex justify-content-between align-items-center">
-                                <h3>{curRecensione.username
-                                    .replace(/_/g, ' ')  // Sostituisci gli underscore con uno spazio
-                                    .replace(/\b\w/g, letter => letter.toUpperCase())}
-                                </h3>
-                                <div className="d-flex align-items-center flex-column">
-                                    <span className="px-1">
-                                        {renderStars(curRecensione.voto)} {curRecensione.voto} su 5
-                                    </span>
-                                    <span></span>
-                                    <span>Recensione del: {new Date(curRecensione.data).toLocaleDateString()}</span>
+                            <hr />
+                            <div className="dettagli row">
+                                <h5 className="pb-2">Dettagli della struttura</h5>
+                                <div className="col-6">
+                                    <p>
+                                        <i className="fa-solid fa-up-right-and-down-left-from-center"></i> MQ: {immobile.mq}
+                                    </p>
+                                    <p>
+                                        <i className="fa-solid fa-bath"></i> Bagni: {immobile.bagni}
+                                    </p>
+                                </div>
+                                <div className="col-6">
+                                    <p>
+                                        <i className="fa-solid fa-door-open"></i> Locali: {immobile.locali}
+                                    </p>
+                                    <p>
+                                        <i className="fa-solid fa-bed"></i> Posti letto: {immobile.posti_letto}
+                                    </p>
+                                </div>
+                                <div className="col-6">
+                                    <p>
+                                        <i className="fa-solid fa-house-chimney"></i> Tipo di alloggio: {alloggio}
+                                    </p>
                                 </div>
                             </div>
-                            <div className="card-body  fw-medium">
-                                <span>{curRecensione.recensione}</span> <br />
+                            <hr />
+                            <div id="info" className="py-2">
+                                <h5>INFO E CONTATTI</h5>
+
+                                <div>
+                                    <SendEmail />
+                                </div>
+                            </div>
+                            <hr />
+
+                        </div>
+                    </div>
+                    <div id="recensioni" className="pt-5">
+                        <div id="titolo_recensioni" className="d-flex justify-content-between">
+                            <div className="pb-2">
+                                <h3>Recensioni clienti</h3>
+                                <span>
+                                    {immobile?.tot_recensioni === 1
+                                        ? `${immobile.tot_recensioni} valutazione globale`
+                                        : `${immobile.tot_recensioni} valutazioni globali`}
+                                </span>
+                            </div>
+                            <div className="align-items-center d-flex flex-column justify-content-center px-3">
+                                <span className="justify-content-center"><strong>Voto medio</strong></span>
+                                <span>
+                                    {renderStars(immobile.voto_medio)} {immobile.voto_medio.toFixed(1)} su 5
+                                </span>
 
                             </div>
                         </div>
-                    ))}
-                </div>
-                <div id="nuova_recensione" className="d-flex py-3">
-                    <ReviewModale
-                        handleSubmit={handleSubmit}
-                        immobile={immobile}
-                    />
-                </div>
-            </section >
-            <Link className="btn btn-secondary ms-5" to="/"><i className="fa-solid fa-arrow-left"></i> Indietro</Link>
+                    </div>
+                    <div className="recensione">
+                        {immobile.recensioni.map((curRecensione, i) => (
+                            <div key={i} className="card shadow-sm mb-3">
+                                <div className="card-header d-flex justify-content-between align-items-center">
+                                    <h3>{curRecensione.username
+                                        .replace(/_/g, ' ')  // Sostituisci gli underscore con uno spazio
+                                        .replace(/\b\w/g, letter => letter.toUpperCase())}
+                                    </h3>
+                                    <div className="d-flex align-items-center flex-column">
+                                        <span className="px-1">
+                                            {renderStars(curRecensione.voto)} {curRecensione.voto} su 5
+                                        </span>
+                                        <span></span>
+                                        <span>Recensione del: {new Date(curRecensione.data).toLocaleDateString()}</span>
+                                    </div>
+                                </div>
+                                <div className="card-body  fw-medium">
+                                    <span>{curRecensione.recensione}</span> <br />
 
-        </main >
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div id="nuova_recensione" className="d-flex py-3">
+                        <ReviewModale
+                            handleSubmit={handleSubmit}
+                            immobile={immobile}
+                        />
+                    </div>
+                </section >
+                <Link className="btn btn-secondary ms-5" to="/"><i className="fa-solid fa-arrow-left"></i> Indietro</Link>
+
+            </main >
+        </ErrorBoundary>
     );
 }
 

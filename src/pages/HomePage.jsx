@@ -63,9 +63,6 @@ function HomePage() {
     })
   }
 
-  //default image
-  const defaultImage = "../images/placeholder.webp";
-
   const renderStars = (voto) => {
     const fullStars = Math.ceil(voto);
     const emptyStars = 5 - fullStars;
@@ -79,14 +76,13 @@ function HomePage() {
     return stars;
   };
 
-
   return (
     <main>
       {/* Hero Section */}
       <div className="hero position-relative text-white text-center">
         {/* Background Image */}
         <img
-          src="../images/hero.jpg"
+          src="/images/hero.jpg"
           alt="Hero Image"
           className="img-fluid w-100"
           style={{ objectFit: "cover", height: "400px" }}
@@ -107,7 +103,6 @@ function HomePage() {
           <Link to={`/search`} className="btn btn-orange mt-2">🔎 Ricerca Avanzata</Link>
         </div>
       </div>
-
 
       {/* Search & Add Section */}
       <div className="container my-5">
@@ -150,11 +145,9 @@ function HomePage() {
                   <AppCard
                     key={immobile.slug}
                     immobile={immobile}
-                    defaultImage={defaultImage}
                     Link={Link}
                     renderStars={renderStars}
                     handleLike={handleLike}
-                   
                     bagni={immobile.bagni}
                     locali={immobile.locali}
                     postiLetto={immobile.posti_letto}
@@ -167,7 +160,6 @@ function HomePage() {
         </div>
       </div>
     </main>
-
   );
 }
 
